@@ -45,12 +45,14 @@ landlord_ids.each do |id|
   pets_allowed = [true, false].sample
   description =  Faker::Lorem.paragraph
   is_available = [true, false].sample
-  operation_type = %w[renting buying].sample
+  purchase_detail = PurchaseDetail.create!(price: rand(20_000..50_000))
+  rent_detail = RentDetail.create!(monthly_rent: rand(1000..7000), maintenance: rand(100..700))
+  operation = rand < 0.2 ? purchase_detail : rent_detail
   property = Property.create!(
     address: address, district: district, province: province, property_type: property_type,
     bedrooms: bedrooms, bathrooms: bathrooms, area: area, apartment_ameneties: apartment_ameneties,
     building_ameneties: building_ameneties, close_by: close_by, pets_allowed: pets_allowed,
-    description: description, is_available: is_available, operation_type: operation_type,
+    description: description, is_available: is_available, operation: operation,
     landlord_id: id
   )
   property.lovers.push(*home_seekers.sample(rand(4..10)))

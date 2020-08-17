@@ -10,9 +10,89 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2020_08_17_061147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "contacts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "property_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["property_id"], name: "index_contacts_on_property_id"
+    t.index ["user_id"], name: "index_contacts_on_user_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "property_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["property_id"], name: "index_favorites_on_property_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
+  create_table "properties", force: :cascade do |t|
+    t.text "address"
+    t.string "district"
+    t.string "province"
+    t.string "property_type"
+    t.integer "bedrooms"
+    t.decimal "bathrooms"
+    t.decimal "area"
+    t.string "apartment_ameneties", default: [], array: true
+    t.string "building_ameneties", default: [], array: true
+    t.string "close_by", default: [], array: true
+    t.boolean "pets_allowed"
+    t.text "description"
+    t.boolean "is_available"
+    t.bigint "landlord_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "operation_type", null: false
+    t.bigint "operation_id", null: false
+    t.index ["landlord_id"], name: "index_properties_on_landlord_id"
+    t.index ["operation_type", "operation_id"], name: "index_properties_on_operation_type_and_operation_id"
+  end
+
+  create_table "purchase_details", force: :cascade do |t|
+    t.integer "price"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "rent_details", force: :cascade do |t|
+    t.integer "monthly_rent"
+    t.integer "maintenance"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "password"
+    t.string "phone_number"
+    t.string "role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "visits", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "property_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["property_id"], name: "index_visits_on_property_id"
+    t.index ["user_id"], name: "index_visits_on_user_id"
+  end
+
+  add_foreign_key "contacts", "properties"
+  add_foreign_key "contacts", "users"
+  add_foreign_key "favorites", "properties"
+  add_foreign_key "favorites", "users"
+  add_foreign_key "properties", "users", column: "landlord_id"
+  add_foreign_key "visits", "properties"
+  add_foreign_key "visits", "users"
 end

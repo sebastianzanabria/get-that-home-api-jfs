@@ -10,11 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2020_08_17_202055) do
+=======
+ActiveRecord::Schema.define(version: 2020_08_11_174809) do
+>>>>>>> 74729dffda530bec887f8b9f901f22dc2d4085bc
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+<<<<<<< HEAD
   create_table "contacts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "property_id", null: false
@@ -33,6 +38,8 @@ ActiveRecord::Schema.define(version: 2020_08_17_202055) do
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
+=======
+>>>>>>> 74729dffda530bec887f8b9f901f22dc2d4085bc
   create_table "properties", force: :cascade do |t|
     t.text "address"
     t.string "district"
@@ -48,12 +55,19 @@ ActiveRecord::Schema.define(version: 2020_08_17_202055) do
     t.text "description"
     t.boolean "is_available"
     t.string "operation_type"
+<<<<<<< HEAD
     t.bigint "landlord_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "price"
     t.decimal "maintenance"
     t.index ["landlord_id"], name: "index_properties_on_landlord_id"
+=======
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_properties_on_user_id"
+>>>>>>> 74729dffda530bec887f8b9f901f22dc2d4085bc
   end
 
   create_table "users", force: :cascade do |t|
@@ -66,6 +80,7 @@ ActiveRecord::Schema.define(version: 2020_08_17_202055) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+<<<<<<< HEAD
   create_table "visits", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "property_id", null: false
@@ -82,4 +97,7 @@ ActiveRecord::Schema.define(version: 2020_08_17_202055) do
   add_foreign_key "properties", "users", column: "landlord_id"
   add_foreign_key "visits", "properties"
   add_foreign_key "visits", "users"
+=======
+  add_foreign_key "properties", "users"
+>>>>>>> 74729dffda530bec887f8b9f901f22dc2d4085bc
 end

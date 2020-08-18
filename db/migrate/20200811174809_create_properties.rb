@@ -17,7 +17,7 @@ class CreateProperties < ActiveRecord::Migration[6.0]
       t.text :description
       t.boolean :is_available
       t.string :operation_type
-      t.references :landlord, null: false, foreign_key: { to_table: 'users' }
+      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end

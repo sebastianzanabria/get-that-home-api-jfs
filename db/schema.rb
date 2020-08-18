@@ -48,12 +48,14 @@ ActiveRecord::Schema.define(version: 2020_08_17_202055) do
     t.text "description"
     t.boolean "is_available"
     t.string "operation_type"
+
     t.bigint "landlord_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "price"
     t.decimal "maintenance"
     t.index ["landlord_id"], name: "index_properties_on_landlord_id"
+
   end
 
   create_table "users", force: :cascade do |t|
@@ -65,6 +67,7 @@ ActiveRecord::Schema.define(version: 2020_08_17_202055) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
+
 
   create_table "visits", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -82,4 +85,5 @@ ActiveRecord::Schema.define(version: 2020_08_17_202055) do
   add_foreign_key "properties", "users", column: "landlord_id"
   add_foreign_key "visits", "properties"
   add_foreign_key "visits", "users"
+
 end

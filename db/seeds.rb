@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'faker'
 
 QTY_USERS = 50

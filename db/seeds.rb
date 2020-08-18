@@ -21,6 +21,8 @@ end
         description: Faker::Lorem.paragraph,
         is_available: [true, false].sample,
         operation_type: ["renting","buying"].sample,
+        price: rand(20..1000),
+        maintenance:rand(5..20),
         user_id: rand(1..10)
     )
     p "property created!" 

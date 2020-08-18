@@ -5,6 +5,7 @@ require 'faker'
 QTY_USERS = 50
 PCT_LANDLORDS = 0.2
 PCT_SUPERLANDLORDS = 0.4
+PCT_PURCHASE = 0.2
 
 puts 'Creating users'
 User.create!(name: 'Landlord Test', email: 'landlordtest@mail.com', password: '123456', role: 'landlord')
@@ -45,13 +46,15 @@ landlord_ids.each do |id|
   pets_allowed = [true, false].sample
   description =  Faker::Lorem.paragraph
   is_available = [true, false].sample
-  operation_type = %w[renting buying].sample
+  operation_type = rand < PCT_PURCHASE ? 'purchase' : 'rent'
+  price = operation_type == 'purchase' ? rand(1000..6000) : rand(100_000..500_000)
+  maintenance = rand(100..400)
   property = Property.create!(
     address: address, district: district, province: province, property_type: property_type,
     bedrooms: bedrooms, bathrooms: bathrooms, area: area, apartment_ameneties: apartment_ameneties,
     building_ameneties: building_ameneties, close_by: close_by, pets_allowed: pets_allowed,
     description: description, is_available: is_available, operation_type: operation_type,
-    landlord_id: id
+    price: price, maintenance: maintenance, landlord_id: id
   )
   property.lovers.push(*home_seekers.sample(rand(4..10)))
   property.applicants.push(*home_seekers.sample(rand(4..6)))

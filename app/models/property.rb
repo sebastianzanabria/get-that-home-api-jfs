@@ -8,4 +8,7 @@ class Property < ApplicationRecord
   has_many :applicants, through: :contacts, source: :user
   has_many :visits
   has_many :visitors, through: :visits, source: :user
+
+  validates :property_type, :maintenance, :price, :bathrooms, :bedrooms, :address, :description, :area, :operation_type, :province, :district, presence: true
+  validates :price, :bathrooms, :bedrooms, :area, :maintenance, numericality: true
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'visits/create'
   # Routes for users
   # resources :users, only: %i[new create]
 
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
     resources :contacts, only: %i[create]
     resources :favorites, only: %i[create]
     delete 'favorites', to: 'favorites#destroy'
+    resources :visits, only: %i[create]
   end
   get '/lastest', to: 'properties#lastest'
 

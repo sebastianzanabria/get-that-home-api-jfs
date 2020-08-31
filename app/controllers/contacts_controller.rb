@@ -1,21 +1,14 @@
 # frozen_string_literal: true
 
 class ContactsController < ApplicationController
-  before_action :set_property, only: [:create]
-  # Missing a way to restrict landlords role for create
+  before_action :valid_home_seeker?, only: [:create]
 
   def create
-    if current_user.role != 'home_seeker'
-      raise ActionController::MethodNotAllowed
+    @contact = Contact.new({ user: current_user, property_id: params[:property_id] })
+    if @contact.save
+      render json: @contact
+    else
+      render json: @contact.errors, status: :unprocessable_entity
     end
-
-    current_user.contacted_properties << @property
-    render json: @property
-  end
-
-  private
-
-  def set_property
-    @property = Property.find(params[:property_id])
   end
 end

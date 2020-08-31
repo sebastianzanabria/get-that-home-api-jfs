@@ -2,8 +2,6 @@
 
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
-  rescue_from ActiveRecord::RecordNotFound, with: :render_404
-  rescue_from ActionController::MethodNotAllowed, with: :render_405
   before_action :require_login
 
   def require_login
@@ -21,14 +19,11 @@ class ApplicationController < ActionController::API
     render json: errors, status: :unauthorized
   end
 
-  def render_404
-    errors = { errors: { message: 'Record not found' } }
-    render json: errors, status: :unprocessable_entity
-  end
-
-  def render_405
-    errors = { errors: { message: 'Method not allowed' } }
-    render json: errors, status: :method_not_allowed
+  def valid_home_seeker?
+    unless current_user.role == 'home_seeker'
+      errors = { errors: { message: 'Only home seekers allowed' } }
+      render json: errors, status: :unauthorized
+    end
   end
 
   def authenticate_token

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   # Routes for properties
   resources :properties, only: %i[index show] do
     resources :contacts, only: %i[create]
+    resources :favorites, only: %i[create]
+    delete 'favorites', to: 'favorites#destroy'
   end
   get '/lastest', to: 'properties#lastest'
 

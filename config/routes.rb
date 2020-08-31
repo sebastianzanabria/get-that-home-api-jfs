@@ -2,10 +2,12 @@
 
 Rails.application.routes.draw do
   # Routes for users
-  resources :users, only: %i[new create]
+  # resources :users, only: %i[new create]
 
   # Routes for properties
-  resources :properties, only: %i[index show]
+  resources :properties, only: %i[index show] do
+    resources :contacts, only: %i[create]
+  end
   get '/lastest', to: 'properties#lastest'
 
   # Routes for sessions

@@ -49,13 +49,18 @@ landlord_ids.each do |id|
   operation_type = rand < PCT_PURCHASE ? 'buy' : 'rent'
   price = operation_type == 'buy' ? rand(1000..6000) : rand(100_000..500_000)
   maintenance = rand(100..400)
-  property = Property.create!(
+  property = Property.new(
     address: address, district: district, province: province, property_type: property_type,
     bedrooms: bedrooms, bathrooms: bathrooms, area: area, apartment_ameneties: apartment_ameneties,
     building_ameneties: building_ameneties, close_by: close_by, pets_allowed: pets_allowed,
     description: description, is_available: is_available, operation_type: operation_type,
     price: price, maintenance: maintenance, landlord_id: id
   )
+  property.images.attach(
+    io: File.open('/home/seuss/Repos/get-that-home-api-jfs/public/images/small_house.jpg'),
+    filename: 'small_house.jpg'
+  )
+  property.save!
   property.lovers.push(*home_seekers.sample(rand(4..10)))
   property.applicants.push(*home_seekers.sample(rand(4..6)))
   unq_visitors = [*home_seekers.sample(rand(4..10)), *property.lovers, *property.applicants].uniq

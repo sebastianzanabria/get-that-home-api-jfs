@@ -24,6 +24,7 @@ class Property < ApplicationRecord
   validate :validate_apartment_ameneties
   validate :validate_building_ameneties
   validate :validate_close_by
+  validate :acceptable_images
 
   APARTMENT_AMENETIES_LIST = ['Central Air Conditioning', 'Stove', 'Fridge', 'TV', 'Laundry room',
                               'Balcony', 'Furnished', 'Dishwasher', 'Closets', 'Walk-in closet',
@@ -50,6 +51,21 @@ class Property < ApplicationRecord
   def validate_close_by
     if !close_by.is_a?(Array) || close_by.detect { |el| !CLOSE_BY_LIST.include?(el) }
       errors.add(:close_by, :invalid)
+    end
+  end
+
+  def acceptable_images
+    unless images.attached?
+      return errors.add(:images, 'At least, one image is obligatory.')
+    end
+
+    unless images.blobs.all? { |image| image.byte_size <= 1.megabyte }
+      errors.add(:images, 'At least, one image is too big.')
+    end
+
+    acceptable_types = ['image/jpeg', 'image/png']
+    unless images.blobs.all? { |image| acceptable_types.include?(image.content_type) }
+      errors.add(:images, 'At least, one image is not a JPEG or PNG')
     end
   end
 end

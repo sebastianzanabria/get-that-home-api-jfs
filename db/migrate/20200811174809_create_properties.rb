@@ -15,7 +15,7 @@ class CreateProperties < ActiveRecord::Migration[6.0]
       t.string :close_by, array: true, default: []
       t.boolean :pets_allowed
       t.text :description
-      t.boolean :is_available
+      t.boolean :is_available, default: true
       t.string :operation_type
       t.references :landlord, null: false, foreign_key: { to_table: 'users' }
 

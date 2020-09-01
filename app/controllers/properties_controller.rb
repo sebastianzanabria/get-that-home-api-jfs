@@ -45,7 +45,7 @@ class PropertiesController < ApplicationController
   def create
     @property = Property.new(property_params)
     if @property.save
-      render json: @property
+      render json: @property.attributes.merge(images: @property.images.blobs.map { |img| img.filename.to_s })
     else
       render json: @property.errors, status: :unprocessable_entity
     end

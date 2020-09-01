@@ -26,6 +26,13 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def valid_landlord?
+    unless current_user.role == 'landlord'
+      errors = { errors: { message: 'Only landlord allowed' } }
+      render json: errors, status: :unauthorized
+    end
+  end
+
   def authenticate_token
     authenticate_with_http_token do |token, _options|
       User.find_by(token: token)

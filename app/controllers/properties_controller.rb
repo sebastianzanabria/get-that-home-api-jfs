@@ -2,6 +2,7 @@
 
 class PropertiesController < ApplicationController
   skip_before_action :require_login, only: %i[index show]
+  before_action :valid_landlord?, only: %i[create patch]
 
   def index
     # Se debe filtrar por el nombre del campo, ej operation_type en lugar de operation (Conversar con Front)
@@ -13,7 +14,7 @@ class PropertiesController < ApplicationController
     operation = params[:operation]
     property = params[:property]
     place = params[:place]
-    # @properties = Property.where("property_type = 'apartment' AND operation_type = 'rent' AND district LIKE 'L%'")
+
     if operation || property
       if (!operation == '') && (!property == '')
         @properties = Property.where(property_type: property, operation_type: operation)
@@ -39,10 +40,28 @@ class PropertiesController < ApplicationController
     render json: { error: 'property not found' }, status: :not_found
   end
 
-  # Dentro del metodo "create" este solo puede ser usado por "landlords"
+  # TODO: pets_allowed property should be arrive as a boolean because string are transformed
+  # to true boolean values except "false" string
+  def create
+    @property = Property.new(property_params)
+    if @property.save
+      render json: @property
+    else
+      render json: @property.errors, status: :unprocessable_entity
+    end
+  end
 
   def lastest
     @properties = Property.limit(3).order(created_at: :desc)
     render json: @properties, status: :ok
+  end
+
+  private
+
+  def property_params
+    params.permit(:operation_type, :address, :price, :maintenance, :property_type,
+                  :bedrooms, :bathrooms, :area, :pets_allowed, :description,
+                  apartment_ameneties: [], building_ameneties: [],
+                  close_by: [], images: []).merge({ landlord: current_user })
   end
 end

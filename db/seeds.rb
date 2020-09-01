@@ -46,8 +46,8 @@ landlord_ids.each do |id|
   pets_allowed = [true, false].sample
   description =  Faker::Lorem.paragraph
   is_available = [true, false].sample
-  operation_type = rand < PCT_PURCHASE ? 'purchase' : 'rent'
-  price = operation_type == 'purchase' ? rand(1000..6000) : rand(100_000..500_000)
+  operation_type = rand < PCT_PURCHASE ? 'buy' : 'rent'
+  price = operation_type == 'buy' ? rand(1000..6000) : rand(100_000..500_000)
   maintenance = rand(100..400)
   property = Property.create!(
     address: address, district: district, province: province, property_type: property_type,

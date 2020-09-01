@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # resources :users, only: %i[new create]
 
   # Routes for properties
-  resources :properties, only: %i[index show] do
+  resources :properties, only: %i[index show create] do
     resources :contacts, only: %i[create]
     resources :favorites, only: %i[create]
     delete 'favorites', to: 'favorites#destroy'

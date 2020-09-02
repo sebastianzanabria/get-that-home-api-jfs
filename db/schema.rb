@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_01_042857) do
+ActiveRecord::Schema.define(version: 2020_09_01_165523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,8 +57,6 @@ ActiveRecord::Schema.define(version: 2020_09_01_042857) do
 
   create_table "properties", force: :cascade do |t|
     t.text "address"
-    t.string "district"
-    t.string "province"
     t.string "property_type"
     t.integer "bedrooms"
     t.decimal "bathrooms"
@@ -68,13 +66,15 @@ ActiveRecord::Schema.define(version: 2020_09_01_042857) do
     t.string "close_by", default: [], array: true
     t.boolean "pets_allowed"
     t.text "description"
-    t.boolean "is_available"
+    t.boolean "is_available", default: true, null: false
     t.string "operation_type"
     t.bigint "landlord_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "price"
     t.decimal "maintenance"
+    t.float "latitude"
+    t.float "longitude"
     t.index ["landlord_id"], name: "index_properties_on_landlord_id"
   end
 

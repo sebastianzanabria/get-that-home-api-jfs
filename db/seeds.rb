@@ -34,8 +34,6 @@ landlord_ids.push(*landlord_ids.sample((landlord_ids.length * PCT_SUPERLANDLORDS
 
 landlord_ids.each do |id|
   address = Faker::Address.street_address
-  district = Faker::Address.city
-  province = Faker::Address.state
   property_type = %w[apartment house].sample
   bedrooms = rand(1..5)
   bathrooms = rand(1..3)
@@ -50,7 +48,7 @@ landlord_ids.each do |id|
   price = operation_type == 'buy' ? rand(1000..6000) : rand(100_000..500_000)
   maintenance = rand(100..400)
   property = Property.new(
-    address: address, district: district, province: province, property_type: property_type,
+    address: address, property_type: property_type,
     bedrooms: bedrooms, bathrooms: bathrooms, area: area, apartment_ameneties: apartment_ameneties,
     building_ameneties: building_ameneties, close_by: close_by, pets_allowed: pets_allowed,
     description: description, is_available: is_available, operation_type: operation_type,

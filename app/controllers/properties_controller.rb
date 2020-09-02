@@ -8,8 +8,6 @@ class PropertiesController < ApplicationController
     # Se debe filtrar por el nombre del campo, ej operation_type en lugar de operation (Conversar con Front)
     # Se debe filtrar si es que el Property tiene "is_available" igual a true
     # Se debe incluir los filtros para los demas campos (bedrooms, bathrooms, apartment amenities)
-    # Se debe recoger los datos con un property_params. OJO con campos tipo array
-    # se debe incluir el local storage para imagenes
     @properties = []
     operation = params[:operation]
     property = params[:property]
@@ -35,9 +33,9 @@ class PropertiesController < ApplicationController
 
   def show
     @property = Property.find(params[:id])
-    render json: @property, status: :ok if @property
+    render json: @property, status: :ok
   rescue StandardError => e
-    render json: { error: 'property not found' }, status: :not_found
+    render json: { error: e.message }, status: :not_found
   end
 
   # TODO: pets_allowed property should be arrive as a boolean because string are transformed
@@ -45,7 +43,7 @@ class PropertiesController < ApplicationController
   def create
     @property = Property.new(property_params)
     if @property.save
-      render json: @property.attributes.merge(images: @property.images.blobs.map { |img| img.filename.to_s })
+      render json: @property
     else
       render json: @property.errors, status: :unprocessable_entity
     end
@@ -58,9 +56,14 @@ class PropertiesController < ApplicationController
 
   private
 
+  # def add_url_paths
+  #   url_paths = @property.images.blobs.map { |b| url_for(b) }
+  #   @property.attributes.merge(images: url_paths)
+  # end
+
   def property_params
-    params.permit(:operation_type, :address, :price, :maintenance, :property_type,
-                  :bedrooms, :bathrooms, :area, :pets_allowed, :description,
+    params.permit(:is_available, :operation_type, :address, :price, :maintenance,
+                  :property_type, :bedrooms, :bathrooms, :area, :pets_allowed, :description,
                   apartment_ameneties: [], building_ameneties: [],
                   close_by: [], images: []).merge({ landlord: current_user })
   end

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Property < ApplicationRecord
+  geocoded_by :address
+  after_validation :geocode, if: :address_changed?
+
   belongs_to :landlord, class_name: 'User'
   has_many :favorites
   has_many :lovers, through: :favorites, source: :user
@@ -10,7 +13,7 @@ class Property < ApplicationRecord
   has_many :visitors, through: :visits, source: :user
   has_many_attached :images
 
-  validates :description, presence: true
+  validates :description, :address, presence: true
 
   validates :operation_type, inclusion: { in: %w[rent buy],
                                           message: '%{value} is not a valid operation type' }
